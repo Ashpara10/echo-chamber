@@ -1,9 +1,8 @@
 import { Post, User } from "@prisma/client";
-import prisma from "@/lib/prisma";
+
 import {
   Bookmark,
   Dot,
-  Loader2,
   MoreHorizontal,
   Reply,
   Share2,
@@ -11,18 +10,12 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import moment from "moment";
@@ -32,7 +25,6 @@ import url from "@/lib/url";
 import toast, { Toaster } from "react-hot-toast";
 import { queryClient } from "@/lib/query-client";
 import { usePathname, useRouter } from "next/navigation";
-import { BookmarkContext } from "./bookmarks";
 
 interface PostProps extends Post {
   User: User;
@@ -77,15 +69,7 @@ const PostCard = ({ data }: { data: PostProps }) => {
       return res;
     },
   });
-  const { addBookmark, isBookmarked, removeBookmark } = useContext(
-    BookmarkContext
-  ) as {
-    bookmarks: string[];
-    addBookmark: (id: string) => void;
-    isBookmarked: (id: string) => boolean;
-    removeBookmark: (id: string) => string[];
-  };
-  const [open, setOpen] = useState(false);
+
   const router = useRouter();
 
   return (
@@ -140,23 +124,9 @@ const PostCard = ({ data }: { data: PostProps }) => {
 
               <DropdownMenuSeparator className="dark:bg-line" />
 
-              <DropdownMenuItem
-                className="gap-x-3 hover:dark:bg-line rounded-lg"
-                onClick={() => {
-                  if (isBookmarked(data?.id)) removeBookmark(data?.id);
-                  addBookmark(data?.id);
-                }}
-              >
-                {!isBookmarked(data?.id) ? (
-                  <>
-                    <Bookmark className="  opacity-80 size-5" />
-                    Bookmark
-                  </>
-                ) : (
-                  <>
-                    <X className="  opacity-80 size-5" /> Remove
-                  </>
-                )}
+              <DropdownMenuItem className="gap-x-3 hover:dark:bg-line rounded-lg">
+                <Bookmark className="  opacity-80 size-5" />
+                Bookmark
               </DropdownMenuItem>
 
               <DropdownMenuSeparator className="dark:bg-line" />
