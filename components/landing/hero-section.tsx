@@ -41,7 +41,7 @@ const HeroSection = () => {
         variants={variants}
         className=" w-full flex mb-3 flex-col items-center justify-center"
       >
-        <h2 className="relative text-3xl text-center font-semibold leading-tight tracking-tighter md:text-4xl lg:text-6xl">
+        <h2 className="relative text-3xl text-center font-medium md:font-semibold leading-tight tracking-tighter md:text-4xl lg:text-6xl">
           Fresh & Modern approach <br /> to Social media 🗣📢
         </h2>
       </motion.div>
