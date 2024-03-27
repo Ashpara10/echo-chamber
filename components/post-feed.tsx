@@ -11,7 +11,7 @@ const PostFeed = () => {
     queryKey: ["posts"],
     queryFn: async () => getPosts(),
   });
-  console.log({ error });
+
 
   return isLoading ? (
     <div className="w-full mt-4 flex items-center justify-center">

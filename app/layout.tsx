@@ -6,8 +6,8 @@ import Providers from "@/lib/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Storeez",
-  description: "A new age social media app for gen z",
+  title: "echo",
+  description: "A no BS algorithm free approach to socail networking for genZ",
 };
 
 export default function RootLayout({
