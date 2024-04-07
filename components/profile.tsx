@@ -98,7 +98,7 @@ const Profile = () => {
               return (
                 <div
                   key={i}
-                  className=" dark:bg-line aspect-square m-2 rounded-xl animate-pulse"
+                  className=" dark:bg-line aspect-square  rounded-xl animate-pulse"
                 />
               );
             })
@@ -110,7 +110,7 @@ const Profile = () => {
                 <div
                   key={i}
                   onClick={() => router.push(`/home/post/${data?.id}`)}
-                  className="flex items-center relative justify-center group "
+                  className="flex items-center relative justify-center group min-h-[200px]"
                 >
                   <div className="w-full group-hover:flex hidden absolute top-2  px-2   items-center justify-start z-10">
                     <Image

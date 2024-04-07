@@ -165,7 +165,7 @@ const PostForm = () => {
               </div>
             )}
             <div className="flex items-center justify-between gap-x-3">
-              <button className="px-3 py-1 rounded-lg border dark:border-line">
+              <button className="px-3 py-1 hover:underline opacity-80 underline-offset-2">
                 Cancel
               </button>
               <button
@@ -174,9 +174,10 @@ const PostForm = () => {
                     ? toast.error("Caption cannot be null")
                     : handleSubmit()
                 }
-                className="px-3 py-1 rounded-lg font-medium bg-white text-black"
+                className="px-4 py-1.5 flex items-center justify-center gap-1 rounded-xl font-medium bg-white text-black"
               >
-                {isPending ? <Loader2 className="animate-spin" /> : <>Post</>}
+                {isPending && <Loader2 className="animate-spin size-5" />}
+                Publish
               </button>
             </div>
           </div>

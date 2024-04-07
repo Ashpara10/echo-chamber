@@ -12,7 +12,6 @@ const PostFeed = () => {
     queryFn: async () => getPosts(),
   });
 
-
   return isLoading ? (
     <div className="w-full mt-4 flex items-center justify-center">
       <Loader2 className="animate-spin" />

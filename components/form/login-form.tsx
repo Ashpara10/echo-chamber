@@ -57,12 +57,12 @@ const Form = () => {
             SignIn to echo
           </span>
           <span className="flex mx-1 items-center justify-center gap-1">
-            <span className="opacity-80">Already have an account?</span>
+            <span className="opacity-80">Don't have an account?</span>
             <Link
               href={"/account/register"}
               className="flex items-center justify-center gap-1 text-green-300 text-opacity-100  hover:underline underline-offset-4"
             >
-              Login <ArrowRight className="size-4" />
+              create one <ArrowRight className="size-4" />
             </Link>
           </span>
         </div>

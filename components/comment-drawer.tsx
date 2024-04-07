@@ -70,7 +70,7 @@ const CommentDrawer = ({ open, post }: { open: boolean; post: string }) => {
             })
           ) : data?.length === 0 ? (
             <div className="mt-8 w-full flex items-center justify-center">
-              No comments on this post 🥱
+              No comments on this post
             </div>
           ) : (
             data?.map((c, i) => {

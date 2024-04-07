@@ -76,12 +76,12 @@ const Form = () => {
             Signup to echo
           </span>
           <span className="flex mx-1 items-center justify-center gap-1">
-            <span className="opacity-80">Don't have an account?</span>
+            <span className="opacity-80">Already have an account?</span>
             <Link
               href={"/account/login"}
               className="flex items-center justify-center gap-1 text-green-300 text-opacity-100  hover:underline underline-offset-4"
             >
-              create one <ArrowRight className="size-4" />
+              Login <ArrowRight className="size-4" />
             </Link>
           </span>
         </div>
@@ -123,7 +123,7 @@ const Form = () => {
         <button className="w-full flex items-center justify-center gap-2 rounded-lg bg-white text-black font-medium py-2 px-4 mt-2">
           {isPending && <Loader2 className="animate-spin size-5" />} Sign up
         </button>
-        <span className="space-1 opacity-90 mt-2 px-1">
+        <span className="text-sm space-1 opacity-90 mt-2 px-1">
           By signing in, you agree to the{" "}
           <u className="underline-offset-2">Terms of Service</u> <br /> and{" "}
           <u className="underline-offset-2">Privacy Policy</u>.

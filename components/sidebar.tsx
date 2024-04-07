@@ -17,7 +17,6 @@ const Sidebar = () => {
     { name: "Home", icon: <Home className="opacity-70" />, href: "/home" },
     { name: `Search`, icon: <Search className="opacity-70" />, href: "" },
     { name: "Notifications", icon: <Bell className="opacity-70" />, href: "" },
-    { name: "Inbox", icon: <MessageCircle className="opacity-70" />, href: "" },
     {
       name: "Bookmarks",
       icon: <Bookmark className="opacity-70" />,
