@@ -33,7 +33,7 @@ const Sidebar = () => {
   return (
     <aside className="h-screen flex p-3.5  flex-col items-center justify-start">
       <nav className="flex flex-col  gap-y-4 items-center justify-start ">
-        <div>
+        <div onClick={() => router.push("/")}>
           <Image src={"/logo.png"} width={40} height={40} alt="" />
         </div>
         <ul className="flex flex-col  gap-y-4 items-center justify-start ">

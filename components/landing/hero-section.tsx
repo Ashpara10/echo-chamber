@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { Variants, motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 
 const variants: Variants = {
   show: {
@@ -26,7 +27,7 @@ const HeroSection = () => {
       variants={variants}
       initial="hide"
       animate="show"
-      className="max-w-4xl flex flex-col items-center justify-center"
+      className="max-w-4xl min-h-screen flex flex-col items-center justify-start"
     >
       <motion.div className="mb-4" variants={variants}>
         <Image
@@ -41,15 +42,27 @@ const HeroSection = () => {
         variants={variants}
         className=" w-full flex mb-3 flex-col items-center justify-center"
       >
-        <h2 className="relative text-3xl text-center font-medium md:font-semibold leading-tight tracking-tighter md:text-4xl lg:text-6xl">
-          Fresh & Modern approach <br /> to Social media 🗣📢
-        </h2>
+        <motion.h2
+          variants={{}}
+          className="relative text-3xl text-center font-medium md:font-semibold leading-tight tracking-tighter md:text-4xl lg:text-6xl"
+        >
+          <motion.span>
+            Fresh & Modern approach <br />
+          </motion.span>
+          <motion.span> to Social media 🗣📢</motion.span>
+        </motion.h2>
+        {/* <div className="mt-5">
+          <button className="text-xl flex items-center justify-center gap-x-1 font-medium bg-green-400 rounded-3xl px-5 py-2.5 text-black">
+            Signup
+            <ChevronRight />
+          </button>
+        </div> */}
       </motion.div>
       <motion.div
         initial={{ scale: 0.7, translateY: 80 }}
         animate={{ scale: 1, translateY: 0 }}
         transition={{ duration: 0.7, type: "tween ", ease: "easeIn" }}
-        className="flex m-2 my-10 ring-[10px] ring-black rounded-2xl overflow-hidden"
+        className="flex m-2 hover: my-10 ring-[10px] ring-black rounded-2xl overflow-hidden"
       >
         <Image
           src={"/echo1.png"}

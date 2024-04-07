@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import url from "@/lib/url";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import Link from "next/link";
 
 type TUser = Pick<User, "username" | "password">;
 
@@ -50,39 +51,52 @@ const Form = () => {
       })}
       className="max-w-sm w-full flex flex-col items-center justify-center"
     >
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          className: "dark:bg-line dark:text-white",
-        }}
-      />
-      <span className="tracking-tighter text-4xl mb-4 font-bold">SignIn</span>
-      <input
-        {...register("username")}
-        placeholder="Enter Username"
-        className="w-full  rounded-xl bg-transparent  px-4 py-2.5 border dark:border-line focus-visible:outline-none"
-      />
-      <div className="w-full mt-3 rounded-xl overflow-hidden flex   border dark:border-line">
-        <input
-          className="w-full bg-transparent  px-4 py-2.5  focus-visible:outline-none"
-          type={show ? "text" : "password"}
-          placeholder="Enter Password"
-          {...register("password")}
-        />
-        <div
-          onClick={() => setShow(!show)}
-          className="text-lg flex items-center justify-center border-l dark:border-line px-2.5 "
-        >
-          {show ? <Eye /> : <EyeOff />}
+      <div className="w-full flex flex-col items-start justify-start gap-3">
+        <div className="flex flex-col items-start justify-center w-full gap-1 mb-2">
+          <span className="text-2xl font-semibold md:text-3xl">
+            SignIn to echo
+          </span>
+          <span className="flex mx-1 items-center justify-center gap-1">
+            <span className="opacity-80">Already have an account?</span>
+            <Link
+              href={"/account/register"}
+              className="flex items-center justify-center gap-1 text-green-300 text-opacity-100  hover:underline underline-offset-4"
+            >
+              Login <ArrowRight className="size-4" />
+            </Link>
+          </span>
         </div>
+
+        <input
+          placeholder="username"
+          {...register("username")}
+          className="form-input"
+        />
+
+        <div className="w-full mt-1 border overflow-hidden border-line rounded-lg bg-dark flex items-center justify-center ">
+          <input
+            placeholder="password"
+            {...register("password")}
+            type={show ? "text" : "password"}
+            className="w-full px-4 py-2"
+          />
+          <button
+            type="button"
+            className="my-1 mx-2 opacity-80"
+            onClick={() => setShow(!show)}
+          >
+            {show ? <EyeOff /> : <Eye />}
+          </button>
+        </div>
+        <button className="w-full flex items-center justify-center gap-2 rounded-lg bg-white text-black font-medium py-2 px-4 mt-2">
+          {isLoading && <Loader2 className="animate-spin size-5" />} Sign In
+        </button>
+        <span className="text-sm space-1 opacity-90 mt-2 px-1">
+          By signing in, you agree to the{" "}
+          <u className="underline-offset-2">Terms of Service</u> <br /> and{" "}
+          <u className="underline-offset-2">Privacy Policy</u>.
+        </span>
       </div>
-      <button className="w-full flex items-center justify-center font-medium mt-3 rounded-xl bg-white text-black px-4 py-2">
-        {isLoading ? (
-          <Loader2 className="animate-spin" />
-        ) : (
-          <>SignIn with Username</>
-        )}
-      </button>
       <span className="text-red-600">
         {errors && errors?.password?.message}
       </span>

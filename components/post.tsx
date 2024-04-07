@@ -74,14 +74,6 @@ const PostCard = ({ data }: { data: PostProps }) => {
 
   return (
     <article className="flex flex-col gap-x-4 px-4 mt-8 pb-6 border-b dark:border-line items-start justify-center ">
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          className:
-            "dark:bg-dark border dark:border-line shadow-none dark:text-white",
-        }}
-      />
-
       <div className="w-full gap-y-3 flex flex-col items-center justify-center">
         <div className="w-full flex items-start justify-between ">
           <div className="flex items-center justify-start">

@@ -9,8 +9,14 @@ export async function POST(req: Request) {
       email,
       password,
       image,
-    }: { username: string; email: string; password: string; image: string } =
-      await req.json();
+      name,
+    }: {
+      username: string;
+      email: string;
+      password: string;
+      image: string;
+      name: string;
+    } = await req.json();
 
     const userExists = await prisma?.user?.findUnique({
       where: {
@@ -30,6 +36,7 @@ export async function POST(req: Request) {
 
     const user = await prisma?.user?.create({
       data: {
+        name: name,
         username: username,
         email: email,
         password: password,
