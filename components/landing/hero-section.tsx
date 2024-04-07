@@ -47,9 +47,9 @@ const HeroSection = () => {
           className="relative text-2xl text-center font-medium md:font-semibold leading-tight tracking-tighter md:text-4xl lg:text-6xl"
         >
           <motion.span>
-            Fresh & Modern approach <br />
+            Fresh & Modern <br /> approach to Social media 🗣📢
           </motion.span>
-          <motion.span> to Social media 🗣📢</motion.span>
+          {/* <motion.span> </motion.span> */}
         </motion.h2>
       </motion.div>
       <motion.div
