@@ -44,19 +44,13 @@ const HeroSection = () => {
       >
         <motion.h2
           variants={{}}
-          className="relative text-3xl text-center font-medium md:font-semibold leading-tight tracking-tighter md:text-4xl lg:text-6xl"
+          className="relative text-2xl text-center font-medium md:font-semibold leading-tight tracking-tighter md:text-4xl lg:text-6xl"
         >
           <motion.span>
             Fresh & Modern approach <br />
           </motion.span>
           <motion.span> to Social media 🗣📢</motion.span>
         </motion.h2>
-        {/* <div className="mt-5">
-          <button className="text-xl flex items-center justify-center gap-x-1 font-medium bg-green-400 rounded-3xl px-5 py-2.5 text-black">
-            Signup
-            <ChevronRight />
-          </button>
-        </div> */}
       </motion.div>
       <motion.div
         initial={{ scale: 0.7, translateY: 80 }}
