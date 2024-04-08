@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React from "react";
 import { Variants, motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
-
+import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 const variants: Variants = {
   show: {
     opacity: 1,
@@ -22,50 +22,67 @@ const variants: Variants = {
 };
 
 const HeroSection = () => {
+  const router = useRouter();
   return (
-    <motion.section
-      variants={variants}
-      initial="hide"
-      animate="show"
-      className="max-w-4xl min-h-screen flex flex-col items-center justify-start"
-    >
-      <motion.div className="mb-4" variants={variants}>
-        <Image
-          src={"/logo.png"}
-          width={80}
-          height={80}
-          alt=""
-          className="aspect-square size-14 lg:size-24"
-        />
-      </motion.div>
+    <>
       <motion.div
-        variants={variants}
-        className=" w-full flex mb-3 flex-col items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ type: "keyframes", duration: 0.75, delay: 1.5 }}
+        className="bg-green-400 text-black font-medium flex items-center justify-center absolute top-0 w-full px-4 py-2"
       >
-        <motion.h2
-          variants={{}}
-          className="relative text-2xl text-center  md:font-semibold leading-tight tracking-tighter md:text-4xl lg:text-6xl"
+        <span
+          onClick={() => router.push("/home")}
+          className="flex group items-center justify-center gap-2"
         >
-          <motion.span>
-            Fresh & Modern <br /> approach to Social media 🗣📢
-          </motion.span>
-        </motion.h2>
+          Start connecting{" "}
+          <ArrowRight className="group-hover:-rotate-45 duration-100 ease-linear opacity-90 size-5" />
+        </span>
       </motion.div>
-      <motion.div
-        initial={{ scale: 0.7, translateY: 80 }}
-        animate={{ scale: 1, translateY: 0 }}
-        transition={{ duration: 0.7, type: "tween ", ease: "easeIn" }}
-        className="flex m-2 hover: my-10 ring-[10px] ring-black rounded-2xl overflow-hidden"
+      <motion.section
+        variants={variants}
+        initial="hide"
+        animate="show"
+        className="max-w-4xl min-h-screen flex flex-col items-center justify-start mt-8"
       >
-        <Image
-          src={"/echo1.png"}
-          width={1500}
-          height={1200}
-          alt=""
-          className=""
-        />
-      </motion.div>
-    </motion.section>
+        <motion.div className="mb-4" variants={variants}>
+          <Image
+            src={"/sun2.svg"}
+            width={80}
+            height={80}
+            alt=""
+            className="aspect-square size-14 lg:size-24"
+          />
+        </motion.div>
+        <motion.div
+          variants={variants}
+          className=" w-full flex mb-3 flex-col items-center justify-center"
+        >
+          <motion.h2
+            variants={{}}
+            className="relative text-3xl font-medium text-center md:font-semibold leading-tight tracking-tight md:tracking-tighter md:text-4xl lg:text-6xl"
+          >
+            <motion.span>
+              Fresh & Modern <br /> approach to Social media 🗣📢
+            </motion.span>
+          </motion.h2>
+        </motion.div>
+        <motion.div
+          initial={{ scale: 0.7, translateY: 80 }}
+          animate={{ scale: 1, translateY: 0 }}
+          transition={{ duration: 0.7, type: "tween ", ease: "easeIn" }}
+          className="flex m-2 hover: my-10 shadow-2xl shadow-black/80 select-none rounded-2xl overflow-hidden"
+        >
+          <Image
+            src={"/echo3.png"}
+            width={1500}
+            height={1200}
+            alt=""
+            className=""
+          />
+        </motion.div>
+      </motion.section>
+    </>
   );
 };
 
