@@ -29,7 +29,7 @@ const HeroSection = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ type: "keyframes", duration: 0.75, delay: 1.5 }}
-        className="bg-green-400 text-black font-medium flex items-center justify-center absolute top-0 w-full px-4 py-2"
+        className="bg-green-300 text-black font-medium flex items-center justify-center absolute top-0 w-full px-4 py-2"
       >
         <span
           onClick={() => router.push("/home")}
@@ -60,10 +60,11 @@ const HeroSection = () => {
         >
           <motion.h2
             variants={{}}
-            className="relative text-3xl font-medium text-center md:font-semibold leading-tight tracking-tight md:tracking-tighter md:text-4xl lg:text-6xl"
+            className="relative text-2xl font-medium text-center md:font-semibold leading-tight tracking-tight md:tracking-tighter md:text-4xl lg:text-6xl"
           >
             <motion.span>
-              Fresh & Modern <br /> approach to Social media 🗣📢
+              Fresh & Modern <br className="hidden md:flex" /> approach to
+              Social media 🗣📢
             </motion.span>
           </motion.h2>
         </motion.div>
