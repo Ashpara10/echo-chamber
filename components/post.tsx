@@ -95,10 +95,10 @@ const PostCard = ({ data }: { data: PostProps }) => {
                     : router.push(`/home/profile/${data?.User?.id}`)
                 }
               >
-                {data?.User.name}
+                {data?.User?.name}
               </span>
               <div className="w-full opacity-80 flex items-center justify-start">
-                <span className=" ">@{data?.User.username}</span>
+                <span className=" ">@{data?.User?.username}</span>
                 <Dot />
                 <span className="">{moment(data?.createdAt).fromNow()}</span>
               </div>

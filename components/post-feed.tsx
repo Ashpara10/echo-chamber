@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import PostCard from "./post";
-import url from "@/lib/url";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { getPosts } from "@/lib/actions";
@@ -11,6 +10,7 @@ const PostFeed = () => {
     queryKey: ["posts"],
     queryFn: async () => getPosts(),
   });
+  console.log({ data });
 
   return isLoading ? (
     <div className="w-full mt-4 flex items-center justify-center">

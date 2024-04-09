@@ -1,6 +1,19 @@
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 
+export async function GET() {
+  const u = cookies().get("user")?.value;
+  const allUsers = await prisma.user?.findMany({
+    select: {
+      id: true,
+      username: true,
+      name: true,
+      image: true,
+    },
+  });
+  return Response.json({ data: allUsers });
+}
+
 export async function PUT(req: Request) {
   const body = await req.json();
   console.log({ body, id: cookies().get("user")?.value });

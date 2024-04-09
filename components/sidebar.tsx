@@ -10,12 +10,20 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import SearchModal from "./search";
 
 const Sidebar = () => {
   const router = useRouter();
+  const [searchModal, setSearchModal] = useState(false);
   const items = [
     { name: "Home", icon: <Home className="opacity-70" />, href: "/home" },
-    { name: `Search`, icon: <Search className="opacity-70" />, href: "" },
+    {
+      name: `Search`,
+      icon: (
+        <Search className="opacity-70" onClick={() => setSearchModal(true)} />
+      ),
+      href: "",
+    },
     { name: "Notifications", icon: <Bell className="opacity-70" />, href: "" },
     {
       name: "Bookmarks",
@@ -31,6 +39,7 @@ const Sidebar = () => {
 
   return (
     <aside className="h-screen flex p-3.5  flex-col items-center justify-start">
+      <SearchModal open={searchModal} setOpen={setSearchModal} />
       <nav className="flex flex-col  gap-y-4 items-center justify-start ">
         <div onClick={() => router.push("/")}>
           <Image src={"/sun2.svg"} width={40} height={40} alt="" />

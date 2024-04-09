@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { Variants, motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Github } from "lucide-react";
 import { useRouter } from "next/navigation";
 const variants: Variants = {
   show: {
@@ -33,10 +33,13 @@ const HeroSection = () => {
       >
         <span
           onClick={() => router.push("/home")}
-          className="flex group items-center justify-center gap-2"
+          className="w-full flex group items-center justify-center gap-2"
         >
           Start connecting{" "}
           <ArrowRight className="group-hover:-rotate-45 duration-100 ease-linear opacity-90 size-5" />
+        </span>
+        <span className="flex items-center justify-center gap-2">
+          <Github className="opacity-80 size-5" />
         </span>
       </motion.div>
       <motion.section

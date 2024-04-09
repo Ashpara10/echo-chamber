@@ -53,6 +53,11 @@ const PostForm = () => {
         .from("images")
         .upload(`${user}-${post?.image?.name}` as string, post?.image as File);
       console.log({ data, error });
+      if (error) {
+        toast.error(`${error?.cause}:${error.message}`);
+        return;
+      }
+
       const {
         data: { publicUrl },
       } = supabase.storage.from("images").getPublicUrl(data?.path as string);
