@@ -10,7 +10,6 @@ const PostFeed = () => {
     queryKey: ["posts"],
     queryFn: async () => getPosts(),
   });
-  console.log({ data });
 
   return isLoading ? (
     <div className="w-full mt-4  flex items-center justify-center">

@@ -145,7 +145,7 @@ const PostForm = () => {
                   }
                   className="px-4 py-1.5 flex items-center justify-center gap-1 rounded-xl font-medium bg-white text-black"
                 >
-                  {<Loader className="animate-spin size-5" /> && isPending}
+                  {isPending && <Loader className="animate-spin size-5" />}
                   Publish
                 </button>
               </div>

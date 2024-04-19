@@ -1,17 +1,7 @@
 import { Post, User } from "@prisma/client";
-
-import {
-  Bookmark,
-  Dot,
-  Heart,
-  MoreHorizontal,
-  Reply,
-  Share2,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Dot, MoreHorizontal, Reply, X } from "lucide-react";
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,10 +12,15 @@ import {
 import moment from "moment";
 import { getCookie } from "cookies-next";
 import { useMutation } from "@tanstack/react-query";
-import url from "@/lib/url";
-import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { useInView } from "framer-motion";
+import { deletePost } from "@/lib/actions";
+import HHeart from "@/icons/heart";
+import HBookmark from "@/icons/bookmark";
+import HMessage from "@/icons/message";
+import HTrash from "@/icons/trash";
+import toast from "react-hot-toast";
 import { queryClient } from "@/lib/query-client";
-import { usePathname, useRouter } from "next/navigation";
 
 interface PostProps extends Post {
   User: User;
@@ -58,27 +53,22 @@ const isImage = (exe: string) => {
 };
 
 const PostCard = ({ data }: { data: PostProps }) => {
+  const router = useRouter();
   const user = getCookie("user");
   const type = data.Image && data?.Image?.split(".");
   const exe = type?.[type?.length - 1];
+  const ref = useRef<HTMLVideoElement | null>(null);
 
-  const { mutate } = useMutation({
-    mutationFn: async (id: string) => {
-      const resp = await fetch(`${url}/api/posts`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          post: id,
-        }),
-      });
-      const res = await resp?.json();
-      return res;
-    },
+  const inView = useInView(ref, { amount: 0.5, margin: "0px" });
+  useEffect(() => {
+    if (inView) {
+      ref?.current?.play();
+    }
+  }, [inView]);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (id: string) => deletePost(id as string),
   });
-
-  const router = useRouter();
 
   return (
     <article className="w-full break-inside  md:max-w-sm  flex flex-col gap-x-4  mt-8   dark:bg-line/30  border-2 rounded-2xl overflow-hidden dark:border-line items-center justify-start ">
@@ -97,10 +87,10 @@ const PostCard = ({ data }: { data: PostProps }) => {
           </div>
         ) : (
           <video
+            ref={ref}
             width={600}
             height={600}
-            autoPlay={true}
-            controls={true}
+            loop={true}
             className="aspect-square w-full rounded-t-2xl border  dark:border-line"
           >
             <source src={data?.Image} />
@@ -144,6 +134,27 @@ const PostCard = ({ data }: { data: PostProps }) => {
         >
           {data?.caption}
         </span>
+      </div>
+      <div className="mt-3 border-t-2 dark:border-line pb-4  pt-3 w-full flex items-center justify-evenly">
+        <HMessage className="size-5 opacity-80" />
+        <HHeart className="size-5 opacity-80" />
+        <HBookmark className="size-5 opacity-80" />
+        {user === data?.User?.id && (
+          <HTrash
+            onClick={async () => {
+              mutate(data?.id, {
+                onSuccess: async () => {
+                  await toast.success("post deleted");
+                  queryClient.refetchQueries({ queryKey: ["posts"] });
+                },
+                onError(error) {
+                  toast.error(error?.message);
+                },
+              });
+            }}
+            className="size-5 opacity-80 hover:text-red-500"
+          />
+        )}
       </div>
     </article>
   );

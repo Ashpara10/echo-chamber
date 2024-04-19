@@ -7,10 +7,26 @@ import { getCookie } from "cookies-next";
 export type TUser = Pick<User, "username" | "password" | "email">;
 const user = getCookie("user");
 
+export async function deletePost(id: string) {
+  const resp = await fetch(`${url}/api/posts`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      post: id,
+    }),
+  });
+  const res = await resp?.json();
+  return res;
+}
+
 export const upload = async ({ media }: { media: File }) => {
+  const filename = media?.name.split(" ").join("");
+  console.log({ filename });
   const { data, error } = await supabase.storage
     .from("images")
-    .upload(`${user}/${media?.name}`, media);
+    .upload(`${user}/${filename}`, media);
   if (error) {
     return { data, error };
   }
