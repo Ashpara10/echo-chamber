@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Loader2, Plus } from "lucide-react";
+import { Loader, Loader2, Plus } from "lucide-react";
 import { updateUser } from "@/lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import url from "@/lib/url";
@@ -155,7 +155,7 @@ const EditProfile = ({
           })}
           className="flex items-center justify-center w-full bg-white font-medium px-4 py-2 rounded-lg text-black"
         >
-          {isPending ? <Loader2 className="animate-spin" /> : <>Update User</>}
+          {isPending ? <Loader className="animate-spin" /> : <>Update User</>}
         </button>
       </DialogContent>
     </Dialog>

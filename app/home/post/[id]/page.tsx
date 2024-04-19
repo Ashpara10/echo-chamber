@@ -11,6 +11,7 @@ import {
   Bookmark,
   Dot,
   Heart,
+  Loader,
   Loader2,
   MessageCircle,
   SendHorizonal,
@@ -109,7 +110,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       {error ? (
         error?.message
       ) : isLoading ? (
-        <Loader2 className="animate-spin text-lg mt-4" />
+        <Loader className="animate-spin text-lg mt-4" />
       ) : (
         <>
           <div className="w-full px-4 flex items-center justify-between">
@@ -196,7 +197,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 className=" font-medium px-4 py-2 rounded-md opacity-80"
               >
                 {isPending ? (
-                  <Loader2 className="animate-spin opacity-90" />
+                  <Loader className="animate-spin opacity-90" />
                 ) : (
                   <SendHorizonal />
                 )}
@@ -206,7 +207,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           <div className=" w-full hidden md:flex flex-col ">
             {isLoading ? (
               <div className="mt-4 flex w-full items-center justify-center ">
-                <Loader2 className="animate-spin " />
+                <Loader className="animate-spin " />
               </div>
             ) : comments?.length === 0 ? (
               <div className="mt-8 w-full flex items-center justify-center">

@@ -10,7 +10,7 @@ import {
 } from "./ui/dialog";
 import { IPost, IUser, getPosts } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
-import { Loader2, Search } from "lucide-react";
+import { Loader, Loader2, Search } from "lucide-react";
 import Fuse, { FuseResult } from "fuse.js";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -74,7 +74,7 @@ const SearchModal = ({
           </div>
         </DialogHeader>
         <div className="max-h-[300px] overflow-y-scroll scrollbar-none flex flex-col w-full gap-y-2 items-center justify-center pt-4 px-2 scroll-smooth ">
-          {isLoading && <Loader2 className="animate-spin size-6" />}
+          {isLoading && <Loader className="animate-spin size-6" />}
           {results &&
             results.map((u, i: number) => {
               return (

@@ -13,7 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import url from "@/lib/url";
 import { useRouter } from "next/navigation";
 import moment from "moment";
-import { Dot, Loader2, Send, SendHorizonal } from "lucide-react";
+import { Dot, Loader, Loader2, Send, SendHorizonal } from "lucide-react";
 import { queryClient } from "@/lib/query-client";
 import toast, { Toaster } from "react-hot-toast";
 import { TComment } from "@/lib/actions";
@@ -144,7 +144,7 @@ const CommentDrawer = ({ open, post }: { open: boolean; post: string }) => {
               className=" font-medium px-4 py-2 rounded-md opacity-80"
             >
               {isPending ? (
-                <Loader2 className="animate-spin opacity-90" />
+                <Loader className="animate-spin opacity-90" />
               ) : (
                 <SendHorizonal />
               )}

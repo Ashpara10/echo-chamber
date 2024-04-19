@@ -8,11 +8,17 @@ import { User } from "@prisma/client";
 import EditProfile from "./edit-profile";
 import { useQuery } from "@tanstack/react-query";
 import { getPostsByID } from "@/lib/actions";
-import { motion } from "framer-motion";
+
+const isImage = (exe: string) => {
+  const imageExe = ["jpg", "jpeg", "png"];
+  const isImg = imageExe.some((v) => v === exe);
+  return isImg;
+};
 
 const Profile = () => {
   const id = getCookie("user");
   const router = useRouter();
+
   const { user, isLoading } = useUser({ id: id as string });
   const [updatedUser, setUpdatedUser] = useState<
     Pick<User, "username" | "name" | "image">
@@ -106,6 +112,8 @@ const Profile = () => {
             <div>No Posts</div>
           ) : (
             posts?.map((data, i) => {
+              const type = data.Image && data?.Image?.split(".");
+              const exe = type?.[type?.length - 1];
               return (
                 <div
                   key={i}
@@ -113,15 +121,27 @@ const Profile = () => {
                   className="flex items-center relative justify-center group min-h-[200px]"
                 >
                   {data?.Image ? (
-                    <Image
-                      alt={data?.User?.name as string}
-                      src={data?.Image as string}
-                      width={400}
-                      height={400}
-                      className="aspect-square my-2 rounded-3xl w-full"
-                      objectFit="cover"
-                      loading="lazy"
-                    />
+                    isImage(exe as string) ? (
+                      <Image
+                        alt={data?.User?.name as string}
+                        src={data?.Image as string}
+                        width={400}
+                        height={400}
+                        className="aspect-square my-2 rounded-3xl w-full"
+                        objectFit="cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <video
+                        width={600}
+                        height={600}
+                        autoPlay={true}
+                        controls={true}
+                        className="aspect-square w-full rounded-3xl border  dark:border-line"
+                      >
+                        <source src={data?.Image} />
+                      </video>
+                    )
                   ) : (
                     <div className="border flex items-center justify-center dark:border-line rounded-3xl  py-4 ">
                       <span className="px-4 opacity-80 flex-wrap">

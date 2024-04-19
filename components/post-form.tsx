@@ -7,7 +7,7 @@ import { Post } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, X } from "lucide-react";
+import { Loader, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -17,7 +17,6 @@ const PostForm = () => {
   const id = getCookie("user");
   const [show, setShow] = useState(false);
   const [type, setType] = useState<"image" | "video" | null>(null);
-  const { user, error, isLoading } = useUser({ id: id as string });
   const [src, setSrc] = useState<string | null>(null);
 
   const [post, setPost] = useState<{ caption: string; image?: File | null }>({
@@ -84,7 +83,7 @@ const PostForm = () => {
               >
                 <X className="text-black " />
               </span>
-              {type === "image" ? (
+              {type === "image" && (
                 <Image
                   alt=""
                   className=" aspect-square"
@@ -93,15 +92,14 @@ const PostForm = () => {
                   height={500}
                   quality={100}
                 />
-              ) : (
+              )}
+              {type === "video" && (
                 <video
                   className="max-w-md aspect-square"
                   width={250}
                   height={250}
-                  autoPlay={true}
-                  controls={true}
                 >
-                  <source src={src} />
+                  <source />
                 </video>
               )}
             </div>
@@ -147,7 +145,7 @@ const PostForm = () => {
                   }
                   className="px-4 py-1.5 flex items-center justify-center gap-1 rounded-xl font-medium bg-white text-black"
                 >
-                  {isPending && <Loader2 className="animate-spin size-5" />}
+                  {<Loader className="animate-spin size-5" /> && isPending}
                   Publish
                 </button>
               </div>

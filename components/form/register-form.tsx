@@ -4,7 +4,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { ArrowRight, Eye, EyeIcon, EyeOff, Loader2 } from "lucide-react";
+import {
+  ArrowRight,
+  Eye,
+  EyeIcon,
+  EyeOff,
+  Loader,
+  Loader2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import url from "@/lib/url";
@@ -121,7 +128,7 @@ const Form = () => {
           </button>
         </div>
         <button className="w-full flex items-center justify-center gap-2 rounded-lg bg-white text-black font-medium py-2 px-4 mt-2">
-          {isPending && <Loader2 className="animate-spin size-5" />} Sign up
+          {isPending && <Loader className="animate-spin size-5" />} Sign up
         </button>
         <span className="text-sm space-1 opacity-90 mt-2 px-1">
           By signing in, you agree to the{" "}
