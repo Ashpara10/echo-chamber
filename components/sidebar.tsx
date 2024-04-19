@@ -42,7 +42,7 @@ const Sidebar = () => {
       <SearchModal open={searchModal} setOpen={setSearchModal} />
       <nav className="flex flex-col  gap-y-4 items-center justify-start ">
         <div onClick={() => router.push("/")}>
-          <Image src={"/sun2.svg"} width={40} height={40} alt="" />
+          <Image src={"/logo.png"} width={40} height={40} alt="" />
         </div>
         <ul className="flex flex-col  gap-y-4 items-center justify-start ">
           {items?.map((e, i) => {

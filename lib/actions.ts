@@ -1,8 +1,47 @@
 import { Comment, Post, User } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import url from "./url";
+import supabase from "./supabase";
+import { getCookie } from "cookies-next";
 
 export type TUser = Pick<User, "username" | "password" | "email">;
+const user = getCookie("user");
+
+export const upload = async ({ media }: { media: File }) => {
+  const { data, error } = await supabase.storage
+    .from("images")
+    .upload(`${user}/${media?.name}`, media);
+  if (error) {
+    return { data, error };
+  }
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("images").getPublicUrl(data?.path as string);
+  return { data: publicUrl, error: null };
+};
+
+export const makePost = async ({
+  post,
+}: {
+  post: Pick<Post, "Image" | "caption">;
+}) => {
+  const res = await fetch(`${url}/api/posts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(
+      !post?.Image
+        ? { caption: post?.caption }
+        : {
+            caption: post?.caption,
+            Image: post?.Image,
+          }
+    ),
+  });
+  const data = await res.json();
+  return data;
+};
 
 export const DEFAULT_USER_PROFILE =
   "https://i.pinimg.com/564x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg";

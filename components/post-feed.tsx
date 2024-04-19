@@ -17,7 +17,7 @@ const PostFeed = () => {
       <Loader2 className="animate-spin" />
     </div>
   ) : (
-    <div className="flex flex-col w-full">
+    <div className="masonry sm:masonry-sm md:masonry-md w-full mt-6 px-3 ">
       {data?.map((post: any, i: number) => {
         return <PostCard key={i} data={post as any} />;
       })}

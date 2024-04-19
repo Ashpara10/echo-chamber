@@ -1,4 +1,4 @@
-import { getCookie } from "cookies-next";
+import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 
 export async function GET() {

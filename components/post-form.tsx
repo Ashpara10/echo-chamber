@@ -1,85 +1,55 @@
 "use client";
+import { Image2Icon } from "@/icons/image";
+import { makePost, upload } from "@/lib/actions";
 import { queryClient } from "@/lib/query-client";
-import supabase from "@/lib/supabase";
-import url from "@/lib/url";
 import useUser from "@/lib/useUser";
 import { Post } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
-import EmojiPicker, { Theme } from "emoji-picker-react";
-import { ImageIcon, Loader2, Smile, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2, X } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
 
-const addPost = async ({ post }: { post: Pick<Post, "Image" | "caption"> }) => {
-  const res = await fetch(`${url}/api/posts`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(
-      !post?.Image
-        ? { caption: post?.caption }
-        : {
-            caption: post?.caption,
-            Image: post?.Image,
-          }
-    ),
-  });
-  const data = await res.json();
-  return data;
-};
-
 const PostForm = () => {
   const id = getCookie("user");
-  const [emoji, setEmoji] = useState(false);
   const [show, setShow] = useState(false);
+  const [type, setType] = useState<"image" | "video" | null>(null);
   const { user, error, isLoading } = useUser({ id: id as string });
+  const [src, setSrc] = useState<string | null>(null);
 
-  const [post, setPost] = useState<{ caption: string; image: File | null }>({
+  const [post, setPost] = useState<{ caption: string; image?: File | null }>({
     caption: "",
     image: null,
   });
+  useEffect(() => {
+    if (post?.image) {
+      const t = post?.image?.type?.split("/")[0];
+      setSrc(window?.URL.createObjectURL(post?.image as File) as string);
+      if (t === "image") {
+        setType("image");
+      } else {
+        setType("video");
+      }
+    }
+  }, [post?.image]);
   const { mutate, isPending } = useMutation({
-    mutationFn: (post: Pick<Post, "Image" | "caption">) => addPost({ post }),
+    mutationFn: (post: Pick<Post, "Image" | "caption">) => makePost({ post }),
   });
   const handleSubmit = async () => {
-    console.log({ post });
-    const user = getCookie("user");
-    if (post?.image) {
-      const { data, error } = await supabase.storage
-        .from("images")
-        .upload(`${user}-${post?.image?.name}` as string, post?.image as File);
-      console.log({ data, error });
-      if (error) {
-        toast.error(`${error?.cause}:${error.message}`);
-        return;
-      }
-
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("images").getPublicUrl(data?.path as string);
-
-      mutate(
-        { caption: post?.caption, Image: publicUrl as string },
-        {
-          onError: (err) => toast.error(err?.message),
-          onSuccess: async () => {
-            setPost({ caption: "", image: null });
-            toast.success("Successfully posted");
-            await queryClient.refetchQueries({ queryKey: ["posts"] });
-          },
-        }
-      );
+    const { data, error } = await upload({ media: post?.image as File });
+    if (error) {
+      toast.error(error?.message);
       return;
     }
+
     mutate(
-      { caption: post?.caption, Image: null },
+      { caption: post?.caption, Image: post?.image ? data : null },
       {
         onError: (err) => toast.error(err?.message),
-        onSuccess: async (data) => {
+        onSuccess: async () => {
           setPost({ caption: "", image: null });
           toast.success("Successfully posted");
           await queryClient.refetchQueries({ queryKey: ["posts"] });
@@ -87,106 +57,103 @@ const PostForm = () => {
       }
     );
   };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target?.files && e.target.files[0]) {
-      setPost({ ...post, image: e.target.files[0] });
-    }
-  };
 
   return (
     <div className="w-full pb-2 group flex justify-center items-start px-3 border-b dark:border-line mt-8">
-      <div className="flex  w-fit items-center justify-center h-full">
-        {isLoading ? (
-          <div className="w-12 h-12 rounded-full animate-pulse dark:bg-line" />
-        ) : (
-          <Image
-            className={`aspect-square rounded-full  `}
-            alt={`${user?.name}-profile`}
-            src={user?.image as string}
-            width={60}
-            height={60}
-            quality={80}
-          />
-        )}
-      </div>
-      <div className="w-full group flex flex-col ml-6  items-center justify-center">
+      <div className="w-full group flex flex-col px-4  items-center justify-center">
         <TextareaAutosize
           value={post?.caption}
-          onClick={() => setShow(!show)}
+          onClick={() => setShow(true)}
           onChange={(e) =>
             setPost({ ...post, caption: e?.target?.value as string })
           }
-          placeholder="What's on your mind?"
-          minRows={3}
+          placeholder="What's on your mind...."
+          minRows={2}
           className="w-full bg-transparent appearance-none resize-none focus-visible:outline-none"
         />
-        <div className="flex w-full ">
-          {post?.image && (
+        {src && (
+          <div className="flex w-full items-center justify-start">
             <div className="rounded-2xl  relative overflow-hidden border dark:border-line">
               <span
-                onClick={() => setPost({ ...post, image: null })}
+                onClick={() => {
+                  setPost({ ...post, image: null }),
+                    setSrc(null),
+                    setType(null);
+                }}
                 className="absolute top-3 left-3 rounded-full p-0.5  bg-white"
               >
                 <X className="text-black " />
               </span>
-              <Image
-                alt=""
-                className=""
-                src={URL.createObjectURL(post?.image)}
-                width={250}
-                height={250}
-                quality={100}
-              />
-            </div>
-          )}
-        </div>
-        {show && (
-          <div className="w-full flex transition-all gap-x-3 mb-3 mt-2 relative items-center justify-between">
-            <div className="flex items-center justify-evenly gap-x-4">
-              <input
-                type="file"
-                onChange={(e) => handleChange(e)}
-                id="image-picker"
-                className="hidden"
-              />
-              <label htmlFor="image-picker">
-                <ImageIcon className="opacity-70 text-lg" />
-              </label>
-              <Smile
-                className="opacity-70 ml-2 text-lg"
-                onClick={() => setEmoji(!emoji)}
-              />
-            </div>
-            {emoji && (
-              <div className="absolute z-10 top-16">
-                <EmojiPicker
-                  theme={Theme?.AUTO}
-                  open={emoji}
-                  className="scrollbar-none"
-                  onEmojiClick={({ emoji }) =>
-                    setPost({ ...post, caption: post?.caption.concat(emoji) })
-                  }
+              {type === "image" ? (
+                <Image
+                  alt=""
+                  className=" aspect-square"
+                  src={src}
+                  width={500}
+                  height={500}
+                  quality={100}
                 />
-              </div>
-            )}
-            <div className="flex items-center justify-between gap-x-3">
-              <button className="px-3 py-1 hover:underline opacity-80 underline-offset-2">
-                Cancel
-              </button>
-              <button
-                onClick={() =>
-                  post?.caption === ""
-                    ? toast.error("Caption cannot be null")
-                    : handleSubmit()
-                }
-                className="px-4 py-1.5 flex items-center justify-center gap-1 rounded-xl font-medium bg-white text-black"
-              >
-                {isPending && <Loader2 className="animate-spin size-5" />}
-                Publish
-              </button>
+              ) : (
+                <video
+                  className="max-w-md aspect-square"
+                  width={250}
+                  height={250}
+                  autoPlay={true}
+                  controls={true}
+                >
+                  <source src={src} />
+                </video>
+              )}
             </div>
           </div>
         )}
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              transition={{ duration: 0.25, type: "tween", ease: "easeIn" }}
+              className="overflow-hidden w-full flex transition-all gap-x-3 mb-3 mt-3 px-2 relative items-center justify-between"
+            >
+              <div className="flex items-center justify-evenly gap-x-4">
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    e?.target?.files &&
+                    setPost({ ...post, image: e.target.files[0] })
+                  }
+                  id="image-picker"
+                  className="hidden"
+                />
+                <label htmlFor="image-picker">
+                  <Image2Icon className="size-7 opacity-70" />
+                </label>
+              </div>
+
+              <div className="flex items-center justify-between gap-x-3">
+                <button
+                  onClick={() => {
+                    setShow(false);
+                    setPost({ caption: "", image: null });
+                    setSrc(null);
+                  }}
+                  className="px-3 py-1 hover:underline opacity-80 underline-offset-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() =>
+                    post?.caption === ""
+                      ? toast.error("Caption cannot be null")
+                      : handleSubmit()
+                  }
+                  className="px-4 py-1.5 flex items-center justify-center gap-1 rounded-xl font-medium bg-white text-black"
+                >
+                  {isPending && <Loader2 className="animate-spin size-5" />}
+                  Publish
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

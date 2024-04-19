@@ -3,6 +3,7 @@ import { Post, User } from "@prisma/client";
 import {
   Bookmark,
   Dot,
+  Heart,
   MoreHorizontal,
   Reply,
   Share2,
@@ -73,22 +74,35 @@ const PostCard = ({ data }: { data: PostProps }) => {
   const router = useRouter();
 
   return (
-    <article className="flex flex-col gap-x-4 px-4 mt-8 pb-6 border-b dark:border-line items-start justify-center ">
-      <div className="w-full gap-y-3 flex flex-col items-center justify-center">
-        <div className="w-full flex items-start justify-between ">
-          <div className="flex items-center justify-start">
+    <article className="w-full break-inside  md:max-w-sm  flex flex-col gap-x-4  mt-8   dark:bg-line/30  border-2 rounded-2xl overflow-hidden dark:border-line items-center justify-start ">
+      {data?.Image && (
+        <div className="flex w-full items-center justify-center relative overflow-hidden">
+          <Image
+            alt={data?.caption as string}
+            src={data?.Image as string}
+            width={600}
+            height={600}
+            className="aspect-square w-full rounded-t-2xl border  dark:border-line"
+            objectFit="cover"
+            loading="lazy"
+          />
+        </div>
+      )}
+      <div className="w-full flex flex-col px-4 py-3 items-center justify-start">
+        <div className="w-full  flex items-start justify-between my-2">
+          <div className="flex  items-center justify-start">
             <div className="w-fit">
               <Image
                 src={data?.User?.image as string}
                 alt={`${data?.User?.name} pfp`}
-                width={70}
-                height={70}
+                width={50}
+                height={50}
                 className="aspect-square border dark:border-line rounded-full"
               />
             </div>
-            <div className="w-full flex flex-col justify-center items-start ml-3 ">
+            <div className="w-full flex flex-col  leading-3 justify-center items-start ml-3 ">
               <span
-                className=" text-left "
+                className="w-full text-left "
                 onClick={() =>
                   data?.User?.id === user
                     ? router.push("/home/profile")
@@ -97,17 +111,28 @@ const PostCard = ({ data }: { data: PostProps }) => {
               >
                 {data?.User?.name}
               </span>
-              <div className="w-full opacity-80 flex items-center justify-start">
+              <div className="w-full text-sm opacity-90 flex items-center justify-start">
                 <span className=" ">@{data?.User?.username}</span>
                 <Dot />
                 <span className="">{moment(data?.createdAt).fromNow()}</span>
               </div>
             </div>
           </div>
+        </div>
 
+        <span
+          onClick={() => router.push(`/home/post/${data?.id}`)}
+          className="w-full flex-wrap opacity-80 my-2"
+        >
+          {data?.caption}
+        </span>
+        {/* <div className="w-full flex items-center mt-2 pt-2.5 border-t-2 dark:border-line/50 justify-evenly">
+          <Reply className="opacity-80 size-5" />
+          <Heart className="opacity-80 size-5" />
+          <Bookmark className="opacity-80 size-5" />
           <DropdownMenu>
             <DropdownMenuTrigger className="focus-visible:outline-none">
-              <MoreHorizontal />
+              <MoreHorizontal className="opacity-80 size-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="rounded-2xl  -translate-x-3 py-2 dark:bg-dark border dark:border-line">
               <DropdownMenuItem className="gap-x-3 hover:dark:bg-line rounded-lg">
@@ -150,31 +175,7 @@ const PostCard = ({ data }: { data: PostProps }) => {
               )}
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-
-        <div
-          className="w-full flex flex-col gap-y-3 "
-          onClick={() => router.push(`/home/post/${data?.id}`)}
-        >
-          <span className="mx-4 opacity-90 text-sm my-2">{data?.caption}</span>
-          {data?.Image && (
-            <Image
-              alt={data?.caption as string}
-              src={data?.Image as string}
-              width={600}
-              height={600}
-              className="aspect-square rounded-2xl border dark:border-line"
-              objectFit="cover"
-              loading="lazy"
-            />
-          )}
-          {/* <div className="w-full mt-3  flex items-center justify-evenly">
-            <Heart />
-            <MessageCircle />
-            <Bookmark />
-            <Eye />
-          </div> */}
-        </div>
+        </div> */}
       </div>
     </article>
   );

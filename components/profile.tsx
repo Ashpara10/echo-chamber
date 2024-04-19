@@ -29,16 +29,16 @@ const Profile = () => {
 
   return (
     <div className="w-full flex flex-col ">
-      <div className="w-full gap-y-3 mb-3 flex items-center justify-center ">
+      <div className="w-full gap-y-3 3 py-3 flex items-center justify-center ">
         <div className="px-2">
           {isLoading ? (
             <div className="w-28 h-28 rounded-3xl dark:bg-line animate-pulse" />
           ) : (
             <Image
-              className="aspect-square rounded-3xl"
+              className="aspect-square rounded-full"
               src={user?.image as string}
-              width={120}
-              height={120}
+              width={100}
+              height={100}
               alt={`${user?.username} pfp`}
             />
           )}
@@ -92,7 +92,7 @@ const Profile = () => {
       </div>
 
       <div className="border-t dark:border-line w-full pb-10">
-        <div className="grid grid-cols-2 lg:grid-cols-3 mb-20 gap-2 px-2 mt-3">
+        <div className="masonry sm:masonry-sm md:masonry-md w-full mt-6 px-3 ">
           {loading ? (
             [...Array(9)].map((_, i) => {
               return (
@@ -112,38 +112,19 @@ const Profile = () => {
                   onClick={() => router.push(`/home/post/${data?.id}`)}
                   className="flex items-center relative justify-center group min-h-[200px]"
                 >
-                  <div className="w-full group-hover:flex hidden absolute top-2  px-2   items-center justify-start z-10">
+                  {data?.Image ? (
                     <Image
                       alt={data?.User?.name as string}
-                      src={data?.User?.image as string}
-                      width={35}
-                      height={35}
-                      className="aspect-square rounded-full"
+                      src={data?.Image as string}
+                      width={400}
+                      height={400}
+                      className="aspect-square my-2 rounded-3xl w-full"
                       objectFit="cover"
                       loading="lazy"
                     />
-                    <div className="flex ml-2 flex-col items-start justify-center w-full">
-                      <span className="text-sm">@{data?.User?.username}</span>
-                    </div>
-                  </div>
-                  {data?.Image ? (
-                    <motion.div className="relative overflow-hidden rounded-2xl">
-                      <span className="group-hover:flex hidden z-10 opacity-100 absolute w-full h-full  items-center justify-center text-center">
-                        {data?.caption}
-                      </span>
-                      <Image
-                        alt={data?.caption as string}
-                        src={data?.Image as string}
-                        width={600}
-                        height={600}
-                        className="aspect-square group-hover:scale-125 transition-all duration-75 ease-in border group-hover:saturate-50 group-hover:opacity-50 dark:border-line"
-                        objectFit="cover"
-                        loading="lazy"
-                      />
-                    </motion.div>
                   ) : (
-                    <div className="box border  w-full h-full dark:border-line rounded-2xl p-3">
-                      <span className="group-hover:opacity-60 leading-snug tracking-tight">
+                    <div className="border flex items-center justify-center dark:border-line rounded-3xl  py-4 ">
+                      <span className="px-4 opacity-80 flex-wrap">
                         {data?.caption}
                       </span>
                     </div>
