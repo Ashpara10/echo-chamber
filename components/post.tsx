@@ -91,6 +91,7 @@ const PostCard = ({ data }: { data: PostProps }) => {
             width={600}
             height={600}
             loop={true}
+            style={{ objectFit: "cover" }}
             className="aspect-square w-full rounded-t-2xl border  dark:border-line"
           >
             <source src={data?.Image} />

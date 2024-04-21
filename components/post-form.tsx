@@ -26,6 +26,7 @@ const PostForm = () => {
   useEffect(() => {
     if (post?.image) {
       const t = post?.image?.type?.split("/")[0];
+      console.log(post?.image, t);
       setSrc(window?.URL.createObjectURL(post?.image as File) as string);
       if (t === "image") {
         setType("image");
@@ -63,9 +64,9 @@ const PostForm = () => {
         <TextareaAutosize
           value={post?.caption}
           onClick={() => setShow(true)}
-          onChange={(e) =>
-            setPost({ ...post, caption: e?.target?.value as string })
-          }
+          onChange={(e) => {
+            setPost({ ...post, caption: e?.target?.value as string });
+          }}
           placeholder="What's on your mind...."
           minRows={2}
           className="w-full bg-transparent appearance-none resize-none focus-visible:outline-none"
@@ -73,34 +74,49 @@ const PostForm = () => {
         {src && (
           <div className="flex w-full items-center justify-start">
             <div className="rounded-2xl  relative overflow-hidden border dark:border-line">
-              <span
-                onClick={() => {
-                  setPost({ ...post, image: null }),
-                    setSrc(null),
-                    setType(null);
-                }}
-                className="absolute top-3 left-3 rounded-full p-0.5  bg-white"
-              >
-                <X className="text-black " />
-              </span>
               {type === "image" && (
-                <Image
-                  alt=""
-                  className=" aspect-square"
-                  src={src}
-                  width={500}
-                  height={500}
-                  quality={100}
-                />
+                <>
+                  <span
+                    onClick={() => {
+                      setPost({ ...post, image: null });
+                      setSrc(null);
+                      setType(null);
+                    }}
+                    className="absolute top-3 left-3 rounded-full p-0.5  bg-white"
+                  >
+                    <X className="text-black " />
+                  </span>
+                  <Image
+                    alt=""
+                    className=" aspect-square"
+                    src={src}
+                    width={500}
+                    height={500}
+                    quality={100}
+                  />
+                </>
               )}
               {type === "video" && (
-                <video
-                  className="max-w-md aspect-square"
-                  width={250}
-                  height={250}
-                >
-                  <source />
-                </video>
+                <>
+                  <span
+                    onClick={() => {
+                      setPost({ ...post, image: null });
+                      setSrc(null);
+                      setType(null);
+                    }}
+                    className="absolute top-3 left-3 rounded-full p-0.5  bg-white"
+                  >
+                    <X className="text-black " />
+                  </span>
+                  <video
+                    className="max-w-md -z-20 aspect-square"
+                    width={350}
+                    height={350}
+                    controls={true}
+                  >
+                    <source src={src} />
+                  </video>
+                </>
               )}
             </div>
           </div>
@@ -114,10 +130,11 @@ const PostForm = () => {
               <div className="flex items-center justify-evenly gap-x-4">
                 <input
                   type="file"
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    e?.target?.files && console.log({ f: e?.target?.files[0] });
                     e?.target?.files &&
-                    setPost({ ...post, image: e.target.files[0] })
-                  }
+                      setPost({ ...post, image: e.target.files[0] });
+                  }}
                   id="image-picker"
                   className="hidden"
                 />

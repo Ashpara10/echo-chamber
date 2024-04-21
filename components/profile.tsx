@@ -137,7 +137,8 @@ const Profile = () => {
                         height={600}
                         autoPlay={true}
                         controls={true}
-                        className="aspect-square w-full rounded-3xl border  dark:border-line"
+                        style={{ objectFit: "cover" }}
+                        className="aspect-square w-full rounded-3xl border my-2  dark:border-line"
                       >
                         <source src={data?.Image} />
                       </video>
