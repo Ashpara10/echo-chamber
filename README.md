@@ -1,6 +1,7 @@
 # Echo✨🌱
 
 echo-chamber is a fresh and minmal approach to social media
+[check it out](https://sunflower-gold.vercel.app)
 
 ### Features:
 
