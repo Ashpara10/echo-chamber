@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function middleware(req: Request) {
   const url = req.url;
+
   const user = cookies().get("user")?.value;
   if (!user && url.includes("/home")) {
     return NextResponse.redirect(new URL("/account/login", url));

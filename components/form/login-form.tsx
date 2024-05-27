@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { ArrowRight, Eye, EyeOff, Loader, Loader2 } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { SignInResponse, signIn } from "next-auth/react";
 import url from "@/lib/url";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
@@ -44,10 +44,19 @@ const Form = () => {
             toast.success("user loggedin");
             push("/home");
           } else {
-            console.log(resp?.error);
-            toast.error("Credentials do not match");
+            toast.error(resp?.error as string);
           }
         });
+        // .then(() => {
+        //   setIsLoading(false);
+        //   if (resp?.ok) {
+        //     toast.success("user loggedin");
+        //     push("/home");
+        //   }
+        // })
+        // .catch((err) => {
+        //   console.log({ err });
+        // });
       })}
       className="max-w-sm w-full flex flex-col items-center justify-center"
     >

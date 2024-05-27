@@ -17,6 +17,10 @@ import {
   SendHorizonal,
   Share2,
 } from "lucide-react";
+import HHeart from "@/icons/heart";
+import HBookmark from "@/icons/bookmark";
+import HMessage from "@/icons/message";
+
 import CommentDrawer from "@/components/comment-drawer";
 import useUser from "@/lib/useUser";
 import { queryClient } from "@/lib/query-client";
@@ -50,6 +54,12 @@ const getPostByID = async (id: string) => {
     return resp;
   }
   return resp?.post as IPost;
+};
+
+const isImage = (exe: string) => {
+  const imageExe = ["jpg", "jpeg", "png"];
+  const isImg = imageExe.some((v) => v === exe);
+  return isImg;
 };
 
 const Page = ({ params }: { params: { id: string } }) => {
@@ -97,6 +107,8 @@ const Page = ({ params }: { params: { id: string } }) => {
   const { user } = useUser({ id: id as string });
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const type = data?.Image && data?.Image?.split(".");
+  const exe = type?.[type?.length - 1];
 
   return (
     <div className=" w-full   mt-6 mb-16 md:mb-2 flex flex-col gap-y-3 items-center justify-start">
@@ -150,21 +162,40 @@ const Page = ({ params }: { params: { id: string } }) => {
 
           <div className="flex flex-col items-start justify-center w-full px-4">
             <span className="opacity-90 mt-2 mb-4">{data?.caption}</span>
-            {data?.Image && (
-              <Image
-                src={data?.Image as string}
-                width={600}
-                height={600}
-                className="aspect-square rounded-lg border dark:border-line"
-                alt=""
-              />
-            )}
+            {data?.Image &&
+              (isImage(exe as string) ? (
+                <div className="flex w-full max-w-lg items-center justify-center relative overflow-hidden">
+                  <Image
+                    alt={data?.caption as string}
+                    src={data?.Image as string}
+                    width={600}
+                    height={600}
+                    className="aspect-square w-full rounded-2xl border  dark:border-line"
+                    objectFit="cover"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <video
+                  width={600}
+                  height={600}
+                  loop={true}
+                  style={{ objectFit: "cover" }}
+                  controls={true}
+                  className="aspect-square max-w-lg w-full rounded-2xl border  dark:border-line"
+                >
+                  <source src={data?.Image} />
+                </video>
+              ))}
           </div>
           <div className="border-y w-full py-3 mb-2 dark:border-line flex md:hidden items-center justify-evenly">
-            <Heart />
-            <MessageCircle onClick={() => setOpen(!open)} />
-            <Bookmark />
-            <Share2 />
+            <HHeart className="size-5 opacity-80" />
+            <HMessage
+              className="size-5 opacity-80"
+              onClick={() => setOpen(!open)}
+            />
+            <HBookmark className="size-5 opacity-80" />
+            {/* <Share2 /> */}
           </div>
 
           <div className="px-4 pt-2 dark:bg-dark border-t dark:border-line  w-full hidden md:flex items-center justify-center">

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { memo } from "react";
 import PostCard from "./post";
 import { useQuery } from "@tanstack/react-query";
 import { Loader, Loader2 } from "lucide-react";
@@ -24,4 +24,4 @@ const PostFeed = () => {
   );
 };
 
-export default PostFeed;
+export default memo(PostFeed);

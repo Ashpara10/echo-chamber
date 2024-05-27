@@ -19,12 +19,12 @@ export async function POST(req: Request) {
   if (!user) {
     return Response.json({
       data: null,
-      error: `ERROR: User "${username}" does not exists`,
+      error: `User "${username}" does not exists`,
     });
   } else if (user?.password !== password) {
     return Response.json({
       data: null,
-      error: `ERROR: Login with the correct password`,
+      error: `Login with the correct password`,
     });
   }
   const token = sign(user, process?.env?.JWT_SECRET as string);

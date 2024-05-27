@@ -2,13 +2,6 @@ import { Post, User } from "@prisma/client";
 import { Dot, MoreHorizontal, Reply, X } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import moment from "moment";
 import { getCookie } from "cookies-next";
 import { useMutation } from "@tanstack/react-query";

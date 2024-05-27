@@ -8,6 +8,7 @@ import url from "./url";
 const prisma = new PrismaClient();
 export const auth: AuthOptions = {
   adapter: PrismaAdapter(prisma),
+  secret: process.env.NEXTAUTH_SECRET as string,
   session: { strategy: "jwt" },
   providers: [
     Credentials({
@@ -30,6 +31,7 @@ export const auth: AuthOptions = {
         const data = await res.json();
 
         if (data?.error) {
+          throw new Error(data?.error);
           return null;
         }
         console.log({ data });
