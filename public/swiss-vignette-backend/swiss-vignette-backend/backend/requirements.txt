@@ -1,9 +1,0 @@
-Django==4.2.5
-django-ckeditor
-djangorestframework==3.14.0
-prestapyt==0.11.1
-requests
-drf-spectacular
-beautifulsoup4
-stripe
-django-cors-headers
